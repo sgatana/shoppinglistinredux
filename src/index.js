@@ -1,13 +1,31 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
-import App from './App';
+import Login from './components/Login';
+import Register from './components/register';
+import Dashboard from './components/Dashboard'
 import './App.css'
+import {BrowserRouter, Route } from 'react-router-dom';
+import {createStore,  applyMiddleware, compose } from 'redux';
+import rootReducer from './reducers/index'
+import thunk from 'redux-thunk';
+import {Provider} from 'react-redux';
 
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const createStoreWithMiddleWare  = composeEnhancers(applyMiddleware(thunk))(createStore);
+let store = createStoreWithMiddleWare(rootReducer)
 
 ReactDom.render(
-   
-        <App />
+        <Provider store ={store}>
+            <BrowserRouter>
+                <div className="container">
+                    <Route exact path='/' component={Login} />
+                    <Route path='/dashboard' component={Dashboard} />
+                    <Route path='/register' component={Register} />
+                </div>
+            </BrowserRouter>
+        </Provider>
    ,
     document.getElementById('root')
 );
