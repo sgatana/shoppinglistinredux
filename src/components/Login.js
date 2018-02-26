@@ -31,6 +31,9 @@ componentDidMount(){
     toast.success(window.localStorage.getItem('msg'))
     localStorage.removeItem('msg')
   }
+  if(this.props.registerSuccess){
+    toast.success(this.props.registerSuccess)
+  }
 }
   render(){
     let spinner;
@@ -79,7 +82,8 @@ const mapStateToProps = state =>{
   return {
     loading: state.loginReducer.loading,
     error: state.loginReducer.error,
-    isAuthenticated: state.loginReducer.token
+    isAuthenticated: state.loginReducer.token,
+    registerSuccess: state.signupReducer.message
 
   }
 }

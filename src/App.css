@@ -5,3 +5,22 @@
 .form-footer{
   padding: 25px
 }
+/* .indexed{
+  z-index: 9999999;
+} */
+.navbar-fixed-top{
+  background-color: rgb(61, 57, 53);
+  
+}
+.navbar-default .navbar-nav>li>a {
+  color: #fff;
+}
+.sidebar{
+  max-width: 250px;
+  min-width: 250px;
+  height: 100vh;
+}
+.wrapper{
+  display: flex;
+  align-items: stretch;
+}

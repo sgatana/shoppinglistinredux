@@ -5,7 +5,7 @@ import Login from './components/Login';
 import Register from './components/register';
 import Dashboard from './components/Dashboard'
 import './App.css'
-import {BrowserRouter, Route } from 'react-router-dom';
+import {BrowserRouter, Route, Switch } from 'react-router-dom';
 import {createStore,  applyMiddleware, compose } from 'redux';
 import rootReducer from './reducers/index'
 import thunk from 'redux-thunk';
@@ -19,11 +19,11 @@ let store = createStoreWithMiddleWare(rootReducer)
 ReactDom.render(
         <Provider store ={store}>
             <BrowserRouter>
-                <div className="container">
+            <Switch>
                     <Route exact path='/' component={Login} />
                     <Route path='/dashboard' component={Dashboard} />
                     <Route path='/register' component={Register} />
-                </div>
+            </Switch>
             </BrowserRouter>
         </Provider>
    ,

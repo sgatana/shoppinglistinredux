@@ -16,22 +16,22 @@ const success = (state, action) => {
 };
 const failure = (state, action) => {
    return{ 
-       token: '',
+        token: '',
         loading: false,
         error: action.error
     }
 }
 export default (state = initialState, action) => {
     switch (action.type) {
-        case actions.LOGIN_START:
+        case actions.START:
              return{
                  ...state,
                  error: '', 
                  loading:true
              }
-        case actions.LOGIN_SUCCESS:
+        case actions.SUCCESS:
              return success(state, action);
-        case actions.LOGIN_FAIL:
+        case actions.FAIL:
             return failure(state, action);
         default:
             return state
