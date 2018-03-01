@@ -2,29 +2,52 @@ import React, {Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {toast, ToastContainer} from 'react-toastify'
+import * as actionTypes from '../actions/actionsCreators'
+import _ from 'lodash';
 
 class Dashboard extends Component{
-    constructor(props){
-        super(props);
-        this.state ={
-            data:''
-        }
-    }
+   
 
     componentDidMount(){
         if (this.props.loginSuccess){
             toast.success(this.props.loginSuccess)
+            
+            // window.location.reload();
         }
+        this.props.getList();
+        // window.location.reload();
+        
     }
+    
    
     render(){
-        let isAuth;
-        if(!this.props.isAuthenticated){
-            localStorage.setItem('msg', 'you have been successfully logged out')
-            isAuth =  <Redirect to='/' />
+        let dashboard;
+        if (!localStorage.getItem('token') || this.props.error === 'your token is invalid, please log in '){
+            dashboard = <Redirect to="/"/>
         }
+       
+        let shoppinglist;
+        if (this.props.shoppinglist){
+            shoppinglist = <div> 
+                <ul> 
+                    {_.map(this.props.shoppinglist, list => {
+                        return(
+                        <li key={list.id}> {list.name}</li>
+                        )
+                    })}
+                </ul>
+            </div>
+        }
+        else if(this.props.error){
+            shoppinglist = <div>{this.props.error}</div>
+        }
+        else{
+            shoppinglist = <div>Loading....</div>
+        }
+
         return(
             <div >
+                {dashboard}
              
                 <div className="navbar navbar-inverse  animate indexed" role='navigation'>
                     <div className="container">
@@ -42,15 +65,15 @@ class Dashboard extends Component{
                         <div className='collapse navbar-collapse' id='nav-collapse'>
                             
                             
-                            <form class="navbar-form navbar-right">
+                            <form className="navbar-form navbar-right">
                                 <ul className='nav navbar-nav'>
-                                    <li> <Link to='/'>Login</Link></li>
-                                    <li> <Link to='/login'>Login</Link></li>
-                                    <li> <Link to='/login'>Login</Link></li>
+                                    {/* <li> <Link to='/'>Login</Link></li>
+                                    <li> <Link to='/login'>Login</Link></li> */}
+                                    <li onClick={() =>{this.props.logout()}}> <Link to='/dashboard'>logout</ Link></li>
 
                                 </ul>
                                 <div className='input-group'>
-                                <input type="text" class="form-control" placeholder="Search..." />
+                                <input type="text" className="form-control" placeholder="Search..." />
                                 <span className='input-group-addon'><i className='glyphicon glyphicon-search' /></span>
                                 </div>
                             </form>
@@ -59,8 +82,9 @@ class Dashboard extends Component{
                 </div>
                 <div className="container">
                     <ToastContainer />
-                    {isAuth}
                     <p>me</p>
+                    
+                    {shoppinglist}
                 </div>
                 
                 
@@ -70,8 +94,15 @@ class Dashboard extends Component{
 }
 const mapStateToProps = (state) => {
    return{
-       isAuthenticated: state.loginReducer.token,
-       loginSuccess: state.loginReducer.message 
+       loginSuccess: state.loginReducer.message,
+       shoppinglist: state.shoppinglist.shoppinglist,
+       error: state.shoppinglist.error
    } 
 }
-export default connect (mapStateToProps)(Dashboard)
+const mapDispatchToProps = dispatch => {
+    return {
+        getList:  () => dispatch(actionTypes.getShoppinglist()),
+        logout: () => dispatch(actionTypes.logout()),
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

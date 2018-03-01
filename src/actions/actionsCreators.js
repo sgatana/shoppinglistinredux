@@ -1,26 +1,30 @@
 import axios from 'axios';
-import * as alerts from './alertActions';
-// import { history } from '../helpers/history';
+import * as actions from './actions'
+import { fetchList_Fail } from './actions';
+
 
 const URL = 'http://127.0.0.1:5000/v1';
-
-export const loginUser =(data) => {
+let apiKey = localStorage.getItem('token')
+const headers = {
+    'Authorization': apiKey,
+    'Content-Type': 'application/x-www-form-urlencoded'
+}
+// login action
+export const loginUser =(data, callback) => {
     return dispatch => {
-        dispatch(alerts.start())
+        dispatch(actions.loginStart())
     
-        axios.post(`${URL}/login`, data)
+        return axios.post(`${URL}/login`, data)
         .then(response => {
-            console.log(response)
-            dispatch(alerts.loginSuccess(response.data.message, response.data.token))
-            localStorage.setItem('token', " Bearer " +response.data.token)
+            localStorage.setItem('token', " Bearer " + response.data.token)
+            dispatch(actions.loginSuccess(response.data.message))
         })
         .catch(error => {
             if(error.response){
-                console.log(error.response)
-                dispatch(alerts.fail(error.response.data.error))
+                dispatch(actions.loginFail(error.response.data.error))
             }
             else{
-                dispatch(alerts.start)
+                dispatch(actions.loginStart())
             }
             
         })
@@ -32,23 +36,45 @@ export const loginUser =(data) => {
 
 export const registerUser = (data) => {
     return dispatch => {
-        dispatch(alerts.start())
-        axios.post(`${URL}/register`, data)
+        dispatch(actions.registerStart())
+        return axios.post(`${URL}/register`, data)
         .then(response => {
-            // history.push('/')
-            dispatch(alerts.success(response.data.message))
+            dispatch(actions.registerSuccess(response.data.message))
             console.log(response.data.message)
-            // console.log(history)
         })
         .catch(error => {
             if(error.response){
-                dispatch(alerts.fail(error.response.data.error))
-                console.log(error.response)
+                dispatch(actions.registerFail(error.response.data.error))
             }
             else{
-                dispatch(alerts.start)
+                dispatch(actions.registerStart())
             }
         })
         
+    }
+}
+
+// fetch shoppinglist 
+
+export const getShoppinglist = () => {
+    return dispatch =>{
+        dispatch(actions.fetchList())
+        axios.get(`${URL}/Shoppinglist`, {headers})
+        .then(response => {
+            dispatch(actions.fetchList_Success(response.data.shoppinglists))
+        })
+        .catch(error => {
+            dispatch(fetchList_Fail(error.response.data.error))
+            
+            
+        })
+    }
+}
+
+export const logout = () => {
+    return dispatch => {
+        dispatch(actions.logout())
+        localStorage.removeItem('token')
+        localStorage.setItem('msg', 'you have been looged out, kindly log')
     }
 }

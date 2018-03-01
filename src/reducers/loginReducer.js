@@ -1,4 +1,4 @@
-import * as  actions from '../actions/actions';
+import * as actions from '../actions/constants';
 
 const initialState = {
     loading:false,
@@ -6,33 +6,29 @@ const initialState = {
     error: '',
     message: ''
 }
-const success = (state, action) => {
-    return{
-        token: action.token,
-        message: action.message,
-        loading: false,
-        error: ''
-    };
-};
-const failure = (state, action) => {
-   return{ 
-        token: '',
-        loading: false,
-        error: action.error
-    }
-}
+
 export default (state = initialState, action) => {
     switch (action.type) {
-        case actions.START:
-             return{
+        case actions.LOGIN_START:
+            return{
                  ...state,
                  error: '', 
                  loading:true
              }
-        case actions.SUCCESS:
-             return success(state, action);
-        case actions.FAIL:
-            return failure(state, action);
+        case actions.LOGIN_SUCCESS:
+            return {
+                // ...state,
+                loading: false,
+                // token: action.token,
+                message: action.message,
+                error: ''
+            }
+        case actions.LOGIN_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.error
+            }
         default:
             return state
     }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Header from './header';
 import {connect} from 'react-redux';
 import * as actionTypes from '../actions/actionsCreators'
-import { Redirect, Link } from 'react-router-dom';
+import { Link,Redirect } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
 class Login extends Component{
@@ -10,7 +10,8 @@ class Login extends Component{
     super(props);
     this.state = {
       email: '',
-      password:''
+      password:'',
+      redirect:false
     }
   }
 
@@ -24,7 +25,10 @@ handleSubmit = (e) => {
   const loginData = new FormData();
   loginData.set('email', this.state.email)
   loginData.set('password', this.state.password)
-  this.props.userLogin(loginData);
+  this.props.userLogin(loginData)
+  .then(()=> {
+    this.setState({redirect:true})
+  })
 }
 componentDidMount(){
   if (localStorage.getItem('msg')){
@@ -34,11 +38,16 @@ componentDidMount(){
   if(this.props.registerSuccess){
     toast.success(this.props.registerSuccess)
   }
+  
 }
   render(){
+
     let spinner;
     let errorMessage = null;
     let isAuth ;
+    if(this.state.redirect){
+      return <Redirect to="/dashboard"/>
+    }
     if(this.props.error){
       errorMessage = <p className="alert alert-danger alert-dismissible "> {this.props.error}</p>
       // toast.error(this.props.error)
@@ -46,21 +55,18 @@ componentDidMount(){
     if (this.props.loading) {
       spinner = <div className="text-center" ><i className='fa fa-circle-o-notch fa-spin fa-3x fa-fw' /></div>
     }
-    if (this.props.isAuthenticated){
-      isAuth = <Redirect to="/dashboard" />
-    }
    
 
     return(
       <div className='container'>
         < Header />
   
-        <form className="form form-horizontal" onSubmit={this.handleSubmit}>
+        <form className="form form-horizontal" onSubmit={(e)=>{this.handleSubmit(e)}}>
           {/* <p className="glyphicon glyphicon-user text-center"/> */}
           {errorMessage}
           {isAuth}
           <h3 className='text-center'>User Login</h3>
-          <ToastContainer hideProgressBar={true} />
+          <ToastContainer />
           <div className='form-group'>
             <label>Username: </label>
             <input type="email" name='email' value={this.state.email} onChange={this.handleChange} className="form-control" />
@@ -82,7 +88,7 @@ const mapStateToProps = state =>{
   return {
     loading: state.loginReducer.loading,
     error: state.loginReducer.error,
-    isAuthenticated: state.loginReducer.token,
+    isAuthenticated: state.loginReducer.message,
     registerSuccess: state.signupReducer.message
 
   }

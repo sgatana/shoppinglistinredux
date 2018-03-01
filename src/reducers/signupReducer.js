@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/actions';
+import * as actionTypes from '../actions/constants';
 const initialState = {
     message: '',
     loading: false,
@@ -7,22 +7,26 @@ const initialState = {
 
 const registerUser = (state = initialState, action) =>{
     switch (action.type) {
-        case actionTypes.START:
+        case actionTypes.REGISTER_START:
             return{
                 ...state,
-                loading: true
+                loading: true,
+                message:'',
+                error:''
             }
-        case actionTypes.SUCCESS:
+        case actionTypes.REGISTER_SUCCESS:
             return {
                 ...state,
                 loading: false,
-                message: action.message
+                message: action.message,
+                error: ''
             }
-        case actionTypes.FAIL:
+        case actionTypes.REGISTER_FAIL:
         return{
             ...state,
             loading: false,
-            error: action.error
+            error: action.error,
+            message:''
         }
     
         default:
