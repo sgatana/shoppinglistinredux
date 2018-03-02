@@ -3,7 +3,9 @@ import * as actions from './actions'
 import { fetchList_Fail } from './actions';
 
 
-const URL = 'http://127.0.0.1:5000/v1';
+// const URL = 'http://127.0.0.1:5000/v1';
+const URL = 'https://shoppinglist-apis.herokuapp.com/v1';
+
 let apiKey = localStorage.getItem('token')
 const headers = {
     'Authorization': apiKey,
@@ -59,7 +61,7 @@ export const registerUser = (data) => {
 export const getShoppinglist = () => {
     return dispatch =>{
         dispatch(actions.fetchList())
-        axios.get(`${URL}/Shoppinglist`, {headers})
+        return axios.get(`${URL}/Shoppinglist`, {headers})
         .then(response => {
             dispatch(actions.fetchList_Success(response.data.shoppinglists))
         })
