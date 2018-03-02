@@ -73,6 +73,19 @@ export const getShoppinglist = () => {
     }
 }
 
+// ADD SHOPPING LIST
+export const ADDLIST = 'ADDLIST';
+export const addList = (data, callback) => {
+    const request = axios.post(`${URL}/Shoppinglist`, data,  {headers})
+    .then( callback);
+
+    return{
+        type: ADDLIST,
+        request,
+        // callback
+    }
+}
+
 export const logout = () => {
     return dispatch => {
         dispatch(actions.logout())

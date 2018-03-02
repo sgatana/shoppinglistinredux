@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify'
 import * as actionTypes from '../actions/actionsCreators'
 import _ from 'lodash';
+import AddShoppinglist from './modals/addShoppinglist';
 
 class Dashboard extends Component {
 
@@ -15,7 +16,7 @@ class Dashboard extends Component {
             // window.location.reload();
         }
         this.props.getList();
-        
+
        
     }
 
@@ -28,14 +29,31 @@ class Dashboard extends Component {
 
         let shoppinglist;
         if (this.props.shoppinglist) {
-            shoppinglist = <div>
-                <ul>
+            shoppinglist = 
+            <div className='row'>
+               
                     {_.map(this.props.shoppinglist, list => {
                         return (
-                            <li key={list.id}> {list.name}</li>
+                            <div className='col-lg-4 col-md-6' key={list.id}>
+                                <div className='panel panel-primary' >
+                                    <div className='panel-heading' >
+                                        {list.name}
+                                        <span><i className=" glyphicon glyphicon-trash pull-right" title='delete shoppinglist' /></span>
+                                        
+                                    </div>
+                                    <div className='panel-body'>
+                                        {list.description}
+                                    </div>
+                                    <div className='panel-footer text-center'>
+                                        <span><i className="btn glyphicon glyphicon-plus-sign text-primary" title='add item'/></span>
+                                        <span><i className="btn glyphicon glyphicon-edit text-warning" title='edit item'/></span>
+                                        <span><i className="btn glyphicon glyphicon-circle-arrow-right text-success" title='view items'/></span>
+                                    </div>
+                                </div>
+                            </div>
                         )
                     })}
-                </ul>
+                
             </div>
         }
         else if (this.props.error) {
@@ -68,19 +86,17 @@ class Dashboard extends Component {
                                 <ul className='nav navbar-top-links navbar-right'>
                                     {/* <li> <Link to='/'>Login</Link></li>
                                     <li> <Link to='/login'>Login</Link></li> */}
-                                    <li onClick={() => { this.props.logout() }}> <Link to='/dashboard'>logout</ Link></li>
+                                <li onClick={() => { this.props.logout() }}> <Link to='/dashboard'><i className="glyphicon glyphicon-user"/>welcome</ Link></li>
+                                <li onClick={() => { this.props.logout() }}> <Link to='/dashboard'><i className='glyphicon glyphicon-log-out' />logout</ Link></li>
 
                                 </ul>
-                                <div className='input-group'>
-                                    <input type="text" className="form-control" placeholder="Search..." />
-                                    <span className='input-group-addon'><i className='glyphicon glyphicon-search' /></span>
-                                </div>
+                                
                             </form>
                         </div>
                     <div className='navbar-default sidebar' role="navigation">
                           <div className='sidebar-nav navbar-collapse'>
                                     <ul className='nav' id='side-menu'>
-                                        <li><Link to='/dashboard'>Dashboard</Link></li>
+                                <li><Link to='/dashboard'><i className="glyphicon glyphicon-dashboard"/>Dashboard</Link></li>
                                         <li><Link to='/logout'>Dashboard</Link></li>
                                         <li><Link to='/dashboard'>Dashboard</Link></li>
                                         <li><Link to='/dashboard'>Dashboard</Link></li>
@@ -93,9 +109,17 @@ class Dashboard extends Component {
              
                     <div className='row'>
                         <div className='col-lg-12'>
-                            <h1 className='page-header'>me</h1>
+                            <h3 className='page-header'>Shoppinglist App
+                                <span className='input-group col-md-4 pull-right'>
+                                    <input type="text" className="form-control" placeholder="Search shoppinglist" />
+                                    <span className='input-group-addon'><i className='glyphicon glyphicon-search' /></span>
+                                </span>
+                            </h3>
                             <ToastContainer />
+                            <AddShoppinglist />
                             {shoppinglist}
+                            <button type="button" data-toggle='modal' data-target='#listmodal' className="btn btn-info btn-circle btn-xl"><i className="fa fa-plus"></i>
+                            </button>
                         </div>
                     </div>
 

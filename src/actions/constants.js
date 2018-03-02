@@ -10,6 +10,11 @@ export const FETCHLIST_FAIL = 'FETCHLIST_FAIL';
 export const FETCHLIST_SUCCESS = 'FETCHLIST_SUCCESS';
 
 
+// add shopping list
+export const ADDLIST_START = 'ADDLIST_START';
+export const ADDLIST_SUCCESS = 'ADDLIST_SUCCESS';
+export const ADDLIST_FAIL = 'ADDLIST_FAIL';
+
 
 // alert constants
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';

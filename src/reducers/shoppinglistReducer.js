@@ -18,16 +18,16 @@ export default (state = initialState, action) => {
         case actionTypes.FETCHLIST_SUCCESS:
             return {
                 ...state,
-                // loading: false,
+                loading: false,
                 shoppinglist: action.shoppinglist,
                 
             }
         case actionTypes.FETCHLIST_FAIL:
             return{
                 ...state,
-                // loading: false,
+                loading: false,
                 error: action.error,
-                // shoppinglist: ''
+                shoppinglist: ''
             }
     
         default:

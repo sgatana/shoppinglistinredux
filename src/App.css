@@ -8,3 +8,16 @@
 .main-menu{
   margin-bottom: 0;
 }
+.page-wrapper{
+  min-height: 775px;
+  position: relative
+}
+.wrapper{
+  position: relative;
+}
+.btn-circle.btn-xl{
+  bottom: 0;
+  position: absolute;
+  right:20px;
+  /* top: 700px; */
+}

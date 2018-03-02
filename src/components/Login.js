@@ -53,7 +53,7 @@ componentDidMount(){
       // toast.error(this.props.error)
     }
     if (this.props.loading) {
-      spinner = <div className="text-center" ><i className='fa fa-circle-o-notch fa-spin fa-3x fa-fw' /></div>
+      spinner = <div className="text-center" ><i className='fa fa-circle-notch fa-spin fa-3x fa-fw' /></div>
     }
    
 
