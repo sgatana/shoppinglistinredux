@@ -6,11 +6,7 @@ import { fetchList_Fail } from './actions';
 // const URL = 'http://127.0.0.1:5000/v1';
 const URL = 'https://shoppinglist-apis.herokuapp.com/v1';
 
-let apiKey = localStorage.getItem('token')
-const headers = {
-    'Authorization': apiKey,
-    'Content-Type': 'application/x-www-form-urlencoded'
-}
+
 // login action
 export const loginUser =(data, callback) => {
     return dispatch => {
@@ -59,6 +55,11 @@ export const registerUser = (data) => {
 // fetch shoppinglist 
 
 export const getShoppinglist = () => {
+    let apiKey = localStorage.getItem('token')
+    const headers = {
+        'Authorization': apiKey,
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
     return dispatch =>{
         dispatch(actions.fetchList())
         return axios.get(`${URL}/Shoppinglist`, {headers})
@@ -76,6 +77,11 @@ export const getShoppinglist = () => {
 // ADD SHOPPING LIST
 export const ADDLIST = 'ADDLIST';
 export const addList = (data, callback) => {
+    let apiKey = localStorage.getItem('token')
+    const headers = {
+        'Authorization': apiKey,
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
     const request = axios.post(`${URL}/Shoppinglist`, data,  {headers})
     .then( callback);
 
